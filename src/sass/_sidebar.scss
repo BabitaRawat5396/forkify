@@ -1,0 +1,66 @@
+@use "base";
+
+.recipe-search-results {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-bottom-left-radius: 1rem;
+
+  :hover {
+    background-color: #f9f5f3;
+  }
+
+  :first-child {
+    background-color: #f9f5f3;
+  }
+
+  .pagination-section {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    margin-top: 1rem;
+  }
+
+  .pagination-hidden {
+    opacity: 0;
+  }
+
+  .pagination {
+    width: fit-content;
+    padding: 0.3rem 1rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    color: base.$color-grad-2;
+    background-color: #f9f5f3;
+  }
+}
+
+.recipe-item {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-template-rows: repeat(2, 1fr);
+  align-items: center;
+  padding: 1rem;
+  padding-left: 2rem;
+  gap: 0.3rem;
+}
+
+.recipe-item-image {
+  grid-row: span 2;
+  width: 65%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.recipe-item-title {
+  align-self: end;
+  color: base.$color-grad-2;
+}
+
+.recipe-item-publisher {
+  align-self: start;
+  color: base.$color-grey-dark-2;
+}
