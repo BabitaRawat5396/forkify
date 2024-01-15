@@ -1,51 +1,180 @@
-@use "base";
-
 .recipe-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.recipe {
-  height: 100%;
-
-  .recipe-heading {
-    position: relative;
-
-    .recipe-image {
-      width: 100%;
-      height: 35%;
-    }
-
-    .recipe-title {
-      position: absolute;
-      background-color: base.$color-primary;
-      bottom: 0;
-      left: 50%;
-      transform: translate(-50%, 20%) skewY(-6deg);
-      color: #fff;
-      font-weight: 700;
-      font-size: 2.5rem;
-      text-transform: uppercase;
-      width: 40%;
-      line-height: 1.95;
-      text-align: center;
-      background-image: linear-gradient(
-        to right bottom,
-        base.$color-grad-1,
-        base.$color-grad-2
-      );
-    }
+  .no-recipe-message {
+    text-align: center;
+    padding: 10%;
   }
 
-  .recipe-operations-section {
-    padding: 5rem 3rem;
-    display: grid;
-    grid-template-columns: 20% 60% 20%;
+  .recipe {
+    // height: 100%;
+    font-size: 1rem;
 
-    .recipe-servings {
+    .recipe-heading {
+      position: relative;
+
+      .recipe-image {
+        aspect-ratio: 2/1;
+        object-fit: cover;
+        width: 100%;
+        z-index: 1;
+      }
+
+      .overlay-image {
+        position: absolute;
+        z-index: 2;
+        width: 100%;
+        height: 98%;
+        background-image: $linear-gradient;
+        opacity: 0.5;
+        top: 0;
+        left: 0;
+      }
+      .recipe-title {
+        position: absolute;
+        z-index: 3;
+        bottom: 0;
+        left: 50%;
+        background-color: $color-primary;
+        transform: translate(-50%, 20%) skewY(-4deg);
+        color: #fff;
+        font-weight: 700;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        width: 40%;
+        line-height: 1.95;
+        text-align: center;
+        background-image: linear-gradient(
+          to right bottom,
+          $color-grad-1,
+          $color-grad-2
+        );
+      }
+    }
+
+    .recipe-operations-section {
+      color: $color-grey-dark-1;
+      padding: 4rem 3rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: 30% 50% 20%;
+      align-items: baseline;
+
+      .numbers {
+        color: $color-grey-dark-1;
+        font-weight: 800;
+      }
+
+      .recipe-servings {
+        display: grid;
+        grid-template-columns: 7% 32% 20%;
+        gap: 0.5rem;
+      }
+
+      .recipe-duration {
+        display: inline-flex;
+        gap: 0.5rem;
+      }
+      .bx {
+        font-size: 1.4rem;
+        color: $color-primary;
+      }
+
+      .recipe-bookmark {
+        background-image: $linear-gradient;
+
+        border-radius: 50%;
+        width: fit-content;
+        display: inline-flex;
+        padding: 0.7rem;
+
+        .bx-bookmark {
+          color: white;
+        }
+      }
+    }
+
+    li {
+      list-style-type: none;
+    }
+
+    .recipe-ingredient-section {
+      background-color: $color-grey-light-2;
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+
+      .recipe-ingredient-list {
+        width: 100%;
+        padding-top: 3rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 1rem;
+        justify-items: center;
+
+        .recipe-ingredient {
+          display: inline-flex;
+          margin-right: 1rem;
+
+          .recipe-icon {
+            height: 2rem;
+            width: 2rem;
+            color: $color-grad-2;
+            font-size: 1.3rem;
+          }
+        }
+      }
+
+      .ingredients-header {
+        color: $color-grad-2;
+        font-size: 1.5rem;
+      }
+    }
+
+    .recipe-directions {
+      padding: 5rem;
+      padding-bottom: 5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1rem;
+      width: 100%;
+
+      .recipe-directions-heading {
+        color: $color-grad-2;
+        margin-bottom: 2rem;
+      }
+
+      .recipe-directions-text {
+        width: 100%;
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 3.5rem;
+        color: $color-grey-dark-2;
+      }
+
+      .recipe-publisher {
+        font-weight: 700;
+      }
+
+      .recipe-btn {
+        font-size: 1.2rem;
+        display: flex;
+        gap: 0.5rem;
+        background-image: $linear-gradient;
+        text-decoration: none;
+        color: $color-grey-light-1;
+        border-radius: 2rem;
+        padding: 1rem 2rem;
+
+        .search-icon {
+          width: 1.4rem;
+          height: 1.4rem;
+
+          use {
+            fill: $color-grey-light-1;
+          }
+        }
+      }
     }
   }
 }

@@ -1,5 +1,7 @@
 const form = document.querySelector(".form");
 const recipeSearchResults = document.querySelector(".recipe-search-results");
+const recipeContent = document.querySelector(".recipe-content");
+
 let count = 0;
 let recipes;
 form.addEventListener("submit", submitHandler);
@@ -36,13 +38,13 @@ function renderSearchedResults() {
 
   slicedRecipes.forEach((recipe) => {
     recipeHtml = `
-      <div class="recipe-item" id="${recipe.id}">
+      <a class="recipe-item" href="#${recipe.id}">
         <img class="recipe-item-image" src="${
           recipe.image_url
         }" alt="recipe-item-${recipe.id}" />
         <p class="recipe-item-title">${recipe.title.toUpperCase()}</p>
         <p class="recipe-item-publisher">${recipe.publisher.toUpperCase()}</p>
-      </div>
+      </a>
     `;
 
     recipeSearchResults.insertAdjacentHTML("beforeend", recipeHtml);
@@ -76,18 +78,89 @@ function renderSearchedResults() {
   }
 }
 
-recipeSearchResults.addEventListener("click", async function (e) {
-  const recipe = e.target.closest(".recipe-item");
-  console.log(recipe.id);
+function renderRecipe(recipe) {
+  const html = `
+    <div class="recipe">
+      <div class="recipe-heading">
+        <img
+          class="recipe-image"
+          src="${recipe.image_url}"
+          alt=""
+        />
+        <div class="overlay-image"></div>
+        <p class="recipe-title">${recipe.title}</p>
+      </div>
+      <div class="recipe-operations-section">
+        <div class="recipe-duration">
+          <i class="bx bx-time"></i>
+          <p><span class="numbers">${recipe.cooking_time}</span> MINUTES</p>
+        </div>
+        <div class="recipe-servings">
+          <i class="bx bx-group"></i>
+          <p class="servings-no"><span class="numbers">${
+            recipe.servings
+          }</span> SERVINGS</p>
+          <div class="servings-no-icons">
+            <i class="bx bx-minus-circle"></i>
+            <i class="bx bx-plus-circle"></i>
+          </div>
+        </div>
+        <p class="recipe-bookmark"><i class="bx bx-bookmark"></i></p>
+      </div>
+      <div class="recipe-ingredient-section">
+        <h3 class="ingredients-header">RECIPE INGREDIENTS</h3>
+        <ul class="recipe-ingredient-list">
+        ${recipe.ingredients
+          .map((rec) => {
+            return `
+            <li class="recipe-ingredient">
+              <i class='bx bx-badge-check recipe-icon'></i>
+              
+              <div class="recipe-quantity">${rec.quantity}</div>
+              <div class="recipe-description">
+                <span class="recipe-unit">${rec.unit}</span>
+                ${rec.description}
+              </div>
+            </li>
+          `;
+          })
+          .join("")}
+        </ul>
+      </div>
 
+      <div class="recipe-directions">
+        <h2 class="recipe-directions-heading">HOW TO COOK IT?</h2>
+        <p class="recipe-directions-text">
+          This recipe was carefully designed and tested by
+          <span class="recipe-publisher">${recipe.publisher}</span>. Please
+          check out directions at their website.
+        </p>
+        <a
+          class="btn--small recipe-btn"
+          href="http://thepioneerwoman.com/cooking/pasta-with-tomato-cream-sauce/"
+          target="_blank"
+        >
+          <span>Directions</span>
+          <svg class="search-icon">
+            <use href="src/img/icons.svg#icon-arrow-right"></use>
+          </svg>
+        </a>
+      </div>
+    </div>
+  `;
+  recipeContent.innerHTML = "";
+  recipeContent.insertAdjacentHTML("beforeend", html);
+}
+
+window.addEventListener("hashchange", async function (e) {
+  const id = window.location.hash.slice(1);
   const recipeContent = await fetch(
-    `https://forkify-api.herokuapp.com/api/v2/recipes/${recipe.id}`
+    `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
   );
   const data = await recipeContent.json();
-  console.log(data.data.recipe);
+  renderRecipe(data.data.recipe);
 });
 
-
-function renderRecipe(recipe){
-
+if (module.hot) {
+  module.hot.accept();
 }

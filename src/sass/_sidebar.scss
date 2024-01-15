@@ -1,5 +1,3 @@
-@use "base";
-
 .recipe-search-results {
   background-color: white;
   display: flex;
@@ -8,6 +6,10 @@
   cursor: pointer;
   font-size: 0.9rem;
   border-bottom-left-radius: 1rem;
+
+  &:first-child:visited {
+    color: purple; // Change the color as desired
+  }
 
   :hover {
     background-color: #f9f5f3;
@@ -33,7 +35,7 @@
     padding: 0.3rem 1rem;
     border-radius: 1rem;
     font-weight: 600;
-    color: base.$color-grad-2;
+    color: $color-grad-2;
     background-color: #f9f5f3;
   }
 }
@@ -57,10 +59,10 @@
 
 .recipe-item-title {
   align-self: end;
-  color: base.$color-grad-2;
+  color: $color-grad-2;
 }
 
 .recipe-item-publisher {
   align-self: start;
-  color: base.$color-grey-dark-2;
+  color: $color-grey-dark-2;
 }
