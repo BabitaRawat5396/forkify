@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.8b2f57bf.png" type="image/x-icon">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/index.f7626f62.css">
+    <script defer="" src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script defer="" src="/index.09c24910.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <main class="container">
+      <!-- Header content goes here -->
+      <header class="header">
+        <!-- logo -->
+        <img class="logo" src="/logo.726d37a8.png" alt="">
+
+        <!-- Search bar -->
+        <form action="" class="form search-bar">
+          <input class="search-input" type="text" name="search" placeholder="Search over 1,000,000 recipes">
+          <button class="search-button">
+            <i class="bx bx-search-alt-2"></i>
+            <span>SEARCH</span>
+          </button>
+        </form>
+
+        <div class="recipe-icons recipe-add">
+          <i class="bx bx-edit"></i>
+          <span>Add</span>
+        </div>
+        <div class="recipe-icons recipe-bookmark">
+          <i class="bx bx-bookmark"></i>
+          <span>Bookmark</span>
+        </div>
+      </header>
+      <div class="recipe-search-results">
+        <!-- Searched results content goes here -->
+        <!-- <div class="recipe-item">
+          <img class="recipe-item-image" src="src/img/favicon.png" alt="" />
+          <p class="recipe-item-title">Carrot Cake</p>
+          <p class="recipe-item-publisher">BBC Good Food</p>
+        </div> -->
+
+        <!-- <div class="pagination-section">
+          <div class="pagination pagination-backward">&larr; Page 1 </div>
+          <div class="pagination pagination-forward">Page 1 &rarr;</div>
+        </div> -->
+      </div>
+
+      <div class="recipe-content">
+        <!-- Recipe content goes here -->
+        <!-- <div>
+          &#128516; Start by searching for a recipe or an ingredient. Have fun!
+        </div> -->
+        <div class="recipe">
+          <div class="recipe-heading">
+            <img class="recipe-image" src="data:image/jpeg;base64,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" alt="">
+          <p class="recipe-title">CARROT CAKE</p>
+          </div>
+          <div class="recipe-operations-section">
+            <p class="recipe-duration">90 MINUTES</p>
+            <div class="recipe-servings">
+              <i class="bx bx-group"></i>
+              <p class="servings-no">1 servings</p>
+              <p class="servings-no-minus">
+                <i class="bx bx-minus-circle"></i>
+              </p>
+              <p class="servings-no-add"><i class="bx bx-plus-circle"></i></p>
+            </div>
+            <p class="recipe-bookmark"><i class="bx bx-bookmark"></i></p>
+          </div>
+          <ul class="recipe-ingredients">
+            <li>75g plain flour</li>
+  <li>1/2 tsps cinnamon</li>
+  <li>1/4 tsp baking powder</li>
+  <li>1/4 tsp bicarbonate of soda</li>
+  <li>50g soft brown sugar</li>
+  <li>1 egg</li>
+  <li>62 1/2 ml oil</li>
+  <li>1/4 orange zested</li>
+  <li>1/4 lemon zested</li>
+  <li>50g carrots finely grated</li>
+  <li>37 1/2g walnuts chopped</li>
+  <li>56 3/4g tin pineapple pieces well drained and chopped</li>
+  <li>31 1/4g unsalted butter at room temperature</li>
+  <li>12 1/2g icing sugar</li>
+  <li>62 1/2g cream cheese</li>
+          </ul>
+          <div class="recipe-publisher-section">
+            <h2 class="recipe-publisher-heading">HOW TO COOK IT</h2>
+            <p class="recipe-publisher-content">
+              This recipe was carefully designed and tested by BBC Good Food.
+              Please check out directions at their website.
+            </p>
+            <button class="recipe-directions">DIRECTION &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  <script src="/forkify.3464ddca.js"></script></body>
+</html>
