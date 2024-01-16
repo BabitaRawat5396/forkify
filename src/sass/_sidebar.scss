@@ -7,17 +7,14 @@
   font-size: 0.9rem;
   border-bottom-left-radius: 1rem;
 
-  &:first-child:visited {
-    color: purple; // Change the color as desired
-  }
 
   :hover {
     background-color: #f9f5f3;
   }
 
-  :first-child {
-    background-color: #f9f5f3;
-  }
+  // :first-child {
+  //   background-color: #f9f5f3;
+  // }
 
   .pagination-section {
     display: flex;

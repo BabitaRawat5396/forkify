@@ -1,0 +1,38 @@
+a {
+  text-decoration: none;
+}
+
+.spinner {
+  text-align: center;
+  padding: 20%;
+
+  svg {
+    height: 6rem;
+    width: 6rem;
+    fill: $color-grey-light-3;
+    animation: rotateSpinner 2s infinite linear;
+  }
+}
+
+@keyframes rotateSpinner {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  text-align: center;
+  padding: 20%;
+  display: flex;
+  gap: 1rem;
+  color: $color-grey-dark-2;
+
+  svg {
+    height: 1.4rem;
+    width: 1.4rem;
+    fill: $color-grad-2;
+  }
+}

@@ -21,10 +21,6 @@ body {
   display: grid;
 }
 
-a {
-  text-decoration: none;
-}
-
 .header {
   grid-column: span 2;
   grid-template-columns: 20% 50% 15% 15%;
@@ -205,11 +201,7 @@ a {
   display: flex;
 }
 
-.recipe-search-results:first-child:visited {
-  color: purple;
-}
-
-.recipe-search-results :hover, .recipe-search-results :first-child {
+.recipe-search-results :hover {
   background-color: #f9f5f3;
 }
 
@@ -433,6 +425,46 @@ a {
 
 .recipe-content .recipe .recipe-directions .recipe-btn .search-icon use {
   fill: #f9f5f3;
+}
+
+a {
+  text-decoration: none;
+}
+
+.spinner {
+  text-align: center;
+  padding: 20%;
+}
+
+.spinner svg {
+  fill: #d3c7c3;
+  width: 6rem;
+  height: 6rem;
+  animation: 2s linear infinite rotateSpinner;
+}
+
+@keyframes rotateSpinner {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  text-align: center;
+  color: #918581;
+  gap: 1rem;
+  padding: 20%;
+  display: flex;
+}
+
+.error svg {
+  fill: #f48982;
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 /*# sourceMappingURL=index.f7626f62.css.map */
