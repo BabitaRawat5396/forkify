@@ -4,7 +4,7 @@ import view from "./view.js";
 
 class RecipeView extends view {
   _parentElement = document.querySelector(".recipe-content");
-  _errorMessage = "";
+  _errorMessage = "Couldn't fetch the recipe. Please try again!";
 
   _generateMarkup() {
     return `
@@ -16,7 +16,9 @@ class RecipeView extends view {
             alt=""
         />
         <div class="overlay-image"></div>
-        <p class="recipe-title">${this._data.title}</p>
+        <h1 class="recipe-title">
+          <span>${this._data.title}</span>
+        </h1>
         </div>
         <div class="recipe-operations-section">
         <div class="recipe-duration">
@@ -26,14 +28,20 @@ class RecipeView extends view {
             }</span> MINUTES</p>
         </div>
         <div class="recipe-servings">
-            <i class="bx bx-group"></i>
-            <p class="servings-no"><span class="numbers">${
-              this._data.servings
-            }</span> SERVINGS</p>
-            <div class="servings-no-icons">
-            <i class="bx bx-minus-circle"></i>
-            <i class="bx bx-plus-circle"></i>
-            </div>
+          <i class="bx bx-group"></i>
+          <p class="servings-no"><span class="numbers">${
+            this._data.servings
+          }</span> SERVINGS</p>
+          <div class="servings-no-icons">
+            <span class="servings--btn minus" data-update-servings="${
+              this._data.servings - 1
+            }"><i class="bx bx-minus-circle"></i>
+            </span>
+            <span class="servings--btn plus" data-update-servings="${
+              this._data.servings + 1
+            }"><i class="bx bx-plus-circle"></i>
+            </span>
+          </div>
         </div>
         <p class="recipe-bookmark"><i class="bx bx-bookmark"></i></p>
         </div>
@@ -70,9 +78,9 @@ class RecipeView extends view {
 
   render(recipe) {
     this._data = recipe;
-    const html = this._generateMarkup();
+    const markup = this._generateMarkup();
     this._clear();
-    this._parentElement.insertAdjacentHTML("beforeend", html);
+    this._parentElement.insertAdjacentHTML("beforeend", markup);
   }
 
   _renderIngredients(ingredients) {
@@ -104,8 +112,20 @@ class RecipeView extends view {
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 
+  addUpdateServingsHandler(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const servingsBtn = e.target.closest(".servings--btn");
+      if (!servingsBtn) return;
+
+      const updateServingsto = +servingsBtn.dataset.updateServings;
+      updateServingsto > 0 && handler(updateServingsto);
+    });
+  }
+
   addHandler(handler) {
-    window.addEventListener("hashchange", handler);
+    ["hashchange", "load"].forEach((event) =>
+      window.addEventListener(event, handler)
+    );
   }
 }
 

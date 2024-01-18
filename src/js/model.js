@@ -50,3 +50,12 @@ export const getPaginatedRecipes = function (page = state.search.page) {
   state.search.page = page;
   return state.search.results.slice(start, end);
 };
+
+export const updatedIngredient = function (newServings) {
+  const originalServings = state.recipe.servings;
+  state.recipe.servings = newServings;
+  state.recipe.ingredients.forEach(
+    (ing) => (ing.quantity = ing.quantity * (newServings / originalServings))
+  );
+  return state.recipe;
+};

@@ -2,6 +2,8 @@ import view from "./view.js";
 
 class PaginationView extends view {
   _parentElement = document.querySelector(".recipe-search-results");
+  _forwardBtn;
+  _backwardBtn;
 
   _generateMarkup(page) {
     return `
@@ -13,9 +15,7 @@ class PaginationView extends view {
     }</div>
         <div data-goto="${
           page + 1
-        }" class="pagination pagination-forward">Page ${
-      page + 1
-    } &rarr;</div>
+        }" class="pagination pagination-forward">Page ${page + 1} &rarr;</div>
     </div>
     `;
   }
@@ -29,14 +29,25 @@ class PaginationView extends view {
 
     const paginationElement = this._generateMarkup(recipes.page);
     this._parentElement.insertAdjacentHTML("beforeend", paginationElement);
+    this._forwardBtn = document.querySelector(".pagination-forward");
+    this._backwardBtn = document.querySelector(".pagination-backward");
+
+    
     if (recipes.page < totalPages) {
-      document.querySelector(".pagination-backward").style.opacity = 0;
+      this._backwardBtn.style.opacity = 0;
+      this._backwardBtn.style.pointerEvents = "none";
     }
     if (recipes.page < totalPages && recipes.page > 1) {
       document.querySelector(".pagination-backward").style.opacity = 1;
+      document.querySelector(".pagination-backward").style.pointerEvents =
+        "auto";
+      document.querySelector(".pagination-forward").style.pointerEvents =
+        "auto";
     }
-    if (recipes.page === totalPages-1) {
+    if (recipes.page === totalPages) {
       document.querySelector(".pagination-forward").style.opacity = 0;
+      document.querySelector(".pagination-forward").style.pointerEvents =
+        "none";
     }
   }
 

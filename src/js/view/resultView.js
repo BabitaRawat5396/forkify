@@ -6,8 +6,11 @@ class ResultView extends view {
   _errorMessage = "No recipes found for your query. Please try again!";
 
   _generateMarkup(recipe) {
+    const id = window.location.hash.slice(1);
     return `
-      <a class="recipe-item" href="#${recipe.id}">
+      <a class="recipe-item ${
+        recipe.id === id ? "recipe-item--active" : ""
+      }" href="#${recipe.id}">
         <img class="recipe-item-image" src="${
           recipe.image_url
         }" alt="recipe-item-${recipe.id}" />

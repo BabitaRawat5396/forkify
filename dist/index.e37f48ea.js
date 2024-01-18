@@ -607,7 +607,7 @@ async function controlRecipeResults() {
 async function controlRecipe() {
     try {
         const id = window.location.hash.slice(1);
-        if (!id) throw new Error("Couldn't fetch id from URL");
+        if (!id) return;
         (0, _recipeViewJsDefault.default).renderSpinner();
         await _modelJs.fetchRecipe(id);
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
@@ -619,10 +619,14 @@ function controlPagination(pageToGo) {
     (0, _resultViewJsDefault.default).render(_modelJs.getPaginatedRecipes(pageToGo));
     (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
 }
+function controlServings(servings) {
+    (0, _recipeViewJsDefault.default).update(_modelJs.updatedIngredient(servings));
+}
 function init() {
     (0, _searchViewJsDefault.default).addSearchHandler(controlRecipeResults);
     (0, _paginationViewJsDefault.default).paginationHandler(controlPagination);
     (0, _recipeViewJsDefault.default).addHandler(controlRecipe);
+    (0, _recipeViewJsDefault.default).addUpdateServingsHandler(controlServings);
 }
 init(); // if (module.hot) {
  //   module.hot.accept();
@@ -635,6 +639,8 @@ var _viewJs = require("./view.js");
 var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 class PaginationView extends (0, _viewJsDefault.default) {
     _parentElement = document.querySelector(".recipe-search-results");
+    _forwardBtn;
+    _backwardBtn;
     _generateMarkup(page) {
         return `
     <div class="pagination-section">
@@ -650,9 +656,21 @@ class PaginationView extends (0, _viewJsDefault.default) {
         const totalPages = this._getTotalPages(recipes);
         const paginationElement = this._generateMarkup(recipes.page);
         this._parentElement.insertAdjacentHTML("beforeend", paginationElement);
-        if (recipes.page < totalPages) document.querySelector(".pagination-backward").style.opacity = 0;
-        if (recipes.page < totalPages && recipes.page > 1) document.querySelector(".pagination-backward").style.opacity = 1;
-        if (recipes.page === totalPages - 1) document.querySelector(".pagination-forward").style.opacity = 0;
+        this._forwardBtn = document.querySelector(".pagination-forward");
+        this._backwardBtn = document.querySelector(".pagination-backward");
+        if (recipes.page < totalPages) {
+            this._backwardBtn.style.opacity = 0;
+            this._backwardBtn.style.pointerEvents = "none";
+        }
+        if (recipes.page < totalPages && recipes.page > 1) {
+            document.querySelector(".pagination-backward").style.opacity = 1;
+            document.querySelector(".pagination-backward").style.pointerEvents = "auto";
+            document.querySelector(".pagination-forward").style.pointerEvents = "auto";
+        }
+        if (recipes.page === totalPages) {
+            document.querySelector(".pagination-forward").style.opacity = 0;
+            document.querySelector(".pagination-forward").style.pointerEvents = "none";
+        }
     }
     paginationHandler(handler) {
         this._parentElement.addEventListener("click", function(e) {
@@ -674,6 +692,22 @@ class View {
     _data = [];
     _clear() {
         this._parentElement.innerHTML = "";
+    }
+    update(data) {
+        this._data = data;
+        const updatedMarkup = this._generateMarkup();
+        // Create a new HTML document using DOMParser
+        const virtualDOM = document.createRange().createContextualFragment(updatedMarkup);
+        const virtualDOMElements = Array.from(virtualDOM.querySelectorAll("*"));
+        const currentDOMElements = Array.from(this._parentElement.querySelectorAll("*"));
+        virtualDOMElements.forEach((newEl, idx)=>{
+            const curEl = currentDOMElements[idx];
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue?.trim() !== "" && curEl) // console.log(curEl.firstChild);
+            // console.log(newEl.firstChild);
+            // curElements which content you want to update depend on the html structure you are using
+            curEl.firstChild.textContent = newEl.firstChild.textContent;
+            if (!newEl.isEqualNode(curEl)) Array.from(newEl.attributes).forEach((attr)=>curEl.setAttribute(attr.name, attr.value));
+        });
     }
     renderSpinner() {
         const markup = `
@@ -780,8 +814,9 @@ class ResultView extends (0, _viewJsDefault.default) {
     _parentElement = document.querySelector(".recipe-search-results");
     _errorMessage = "No recipes found for your query. Please try again!";
     _generateMarkup(recipe) {
+        const id = window.location.hash.slice(1);
         return `
-      <a class="recipe-item" href="#${recipe.id}">
+      <a class="recipe-item ${recipe.id === id ? "recipe-item--active" : ""}" href="#${recipe.id}">
         <img class="recipe-item-image" src="${recipe.image_url}" alt="recipe-item-${recipe.id}" />
         <p class="recipe-item-title">${recipe.title.length < 17 ? recipe.title.toUpperCase() : recipe.title.toUpperCase().slice(0, 17) + "..."}</p>
         <p class="recipe-item-publisher">${recipe.publisher.toUpperCase()}</p>
@@ -836,7 +871,7 @@ var _viewJs = require("./view.js");
 var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 class RecipeView extends (0, _viewJsDefault.default) {
     _parentElement = document.querySelector(".recipe-content");
-    _errorMessage = "";
+    _errorMessage = "Couldn't fetch the recipe. Please try again!";
     _generateMarkup() {
         return `
     <div class="recipe">
@@ -847,7 +882,9 @@ class RecipeView extends (0, _viewJsDefault.default) {
             alt=""
         />
         <div class="overlay-image"></div>
-        <p class="recipe-title">${this._data.title}</p>
+        <h1 class="recipe-title">
+          <span>${this._data.title}</span>
+        </h1>
         </div>
         <div class="recipe-operations-section">
         <div class="recipe-duration">
@@ -855,12 +892,14 @@ class RecipeView extends (0, _viewJsDefault.default) {
             <p><span class="numbers">${this._data.cooking_time}</span> MINUTES</p>
         </div>
         <div class="recipe-servings">
-            <i class="bx bx-group"></i>
-            <p class="servings-no"><span class="numbers">${this._data.servings}</span> SERVINGS</p>
-            <div class="servings-no-icons">
-            <i class="bx bx-minus-circle"></i>
-            <i class="bx bx-plus-circle"></i>
-            </div>
+          <i class="bx bx-group"></i>
+          <p class="servings-no"><span class="numbers">${this._data.servings}</span> SERVINGS</p>
+          <div class="servings-no-icons">
+            <span class="servings--btn minus" data-update-servings="${this._data.servings - 1}"><i class="bx bx-minus-circle"></i>
+            </span>
+            <span class="servings--btn plus" data-update-servings="${this._data.servings + 1}"><i class="bx bx-plus-circle"></i>
+            </span>
+          </div>
         </div>
         <p class="recipe-bookmark"><i class="bx bx-bookmark"></i></p>
         </div>
@@ -894,9 +933,9 @@ class RecipeView extends (0, _viewJsDefault.default) {
     }
     render(recipe) {
         this._data = recipe;
-        const html = this._generateMarkup();
+        const markup = this._generateMarkup();
         this._clear();
-        this._parentElement.insertAdjacentHTML("beforeend", html);
+        this._parentElement.insertAdjacentHTML("beforeend", markup);
     }
     _renderIngredients(ingredients) {
         return ingredients.map((rec)=>{
@@ -921,8 +960,19 @@ class RecipeView extends (0, _viewJsDefault.default) {
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
     }
+    addUpdateServingsHandler(handler) {
+        this._parentElement.addEventListener("click", function(e) {
+            const servingsBtn = e.target.closest(".servings--btn");
+            if (!servingsBtn) return;
+            const updateServingsto = +servingsBtn.dataset.updateServings;
+            updateServingsto > 0 && handler(updateServingsto);
+        });
+    }
     addHandler(handler) {
-        window.addEventListener("hashchange", handler);
+        [
+            "hashchange",
+            "load"
+        ].forEach((event)=>window.addEventListener(event, handler));
     }
 }
 exports.default = new RecipeView();
@@ -1188,6 +1238,7 @@ parcelHelpers.export(exports, "getJSON", ()=>getJSON);
 parcelHelpers.export(exports, "fetchSearchResults", ()=>fetchSearchResults);
 parcelHelpers.export(exports, "fetchRecipe", ()=>fetchRecipe);
 parcelHelpers.export(exports, "getPaginatedRecipes", ()=>getPaginatedRecipes);
+parcelHelpers.export(exports, "updatedIngredient", ()=>updatedIngredient);
 var _configJs = require("./config.js");
 const state = {
     recipe: null,
@@ -1229,6 +1280,12 @@ const getPaginatedRecipes = function(page = state.search.page) {
     const end = page * 10;
     state.search.page = page;
     return state.search.results.slice(start, end);
+};
+const updatedIngredient = function(newServings) {
+    const originalServings = state.recipe.servings;
+    state.recipe.servings = newServings;
+    state.recipe.ingredients.forEach((ing)=>ing.quantity = ing.quantity * (newServings / originalServings));
+    return state.recipe;
 };
 
 },{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {

@@ -27,7 +27,7 @@ async function controlRecipe() {
   try {
     const id = window.location.hash.slice(1);
     if (!id) {
-      throw new Error("Couldn't fetch id from URL");
+      return;
     }
     recipeView.renderSpinner();
     await model.fetchRecipe(id);
@@ -42,10 +42,15 @@ function controlPagination(pageToGo) {
   paginationView.render(model.state.search);
 }
 
+function controlServings(servings) {
+  recipeView.update(model.updatedIngredient(servings));
+}
+
 function init() {
   searchView.addSearchHandler(controlRecipeResults);
   paginationView.paginationHandler(controlPagination);
   recipeView.addHandler(controlRecipe);
+  recipeView.addUpdateServingsHandler(controlServings);
 }
 
 init();

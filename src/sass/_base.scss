@@ -19,24 +19,59 @@ $breakpoint-large-desktop: 1200px;
 * {
   margin: 0;
   padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
   box-sizing: border-box;
+
+  @media only screen and (max-width: $breakpoint-tablet) {
+    font-size: 60%;
+  }
+
+  @media only screen and (max-width: $breakpoint-small-desktop) {
+    font-size: 80%;
+  }
 }
 
 body {
+  // min-width: 100vw;
+  min-height: 100vh;
   background-image: $linear-gradient;
   font-family: "Nunito Sans", sans-serif;
   font-size: 1.2rem;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .container {
-  min-width: 600px;
-  margin: 3rem 2rem;
+  overflow: hidden;
+  box-shadow: 0 2rem 6rem 0.5rem rgba($color-grey-dark-1, 0.2);
+  max-width: 120rem;
+  min-height: 75rem;
   background-color: $color-grey-light-1;
-  min-height: 70rem;
-  border-radius: 1rem;
   display: grid;
   grid-template-rows: 7rem auto;
   grid-template-columns: 30% 70%;
+  transition: margin 1s linear;
 }
 
+@media screen and (min-width: $breakpoint-small-desktop) {
+  .container {
+    margin: 3rem 2rem;
+    border-radius: 1rem;
+  }
+}
 
+@media screen and (max-width: $breakpoint-small-desktop) {
+  .container {
+    margin: auto;
+    border-radius: 0%;
+    width: fit-content;
+  }
+}
