@@ -6,15 +6,17 @@
   cursor: pointer;
   font-size: 0.9rem;
   border-bottom-left-radius: 1rem;
-
+  
 
   :hover {
     background-color: #f9f5f3;
+    transform: translateY(-4%);
+    transition: transform 0.1s linear;
   }
 
-  // :first-child {
-  //   background-color: #f9f5f3;
-  // }
+  :first-child {
+    background-color: #f9f5f3;
+  }
 
   .pagination-section {
     display: flex;

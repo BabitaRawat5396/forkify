@@ -1,37 +1,34 @@
 import icons from "url:../../img/icons.svg";
 import { Fraction } from "fractional";
+import view from "./view.js";
 
-class Recipe {
-  #parentElement = document.querySelector(".recipe-content");
-  #data;
+class RecipeView extends view {
+  _parentElement = document.querySelector(".recipe-content");
+  _errorMessage = "";
 
-  #clear() {
-    this.#parentElement.innerHTML = "";
-  }
-
-  _recipeTemplate() {
+  _generateMarkup() {
     return `
     <div class="recipe">
         <div class="recipe-heading">
         <img
             class="recipe-image"
-            src="${this.#data.image_url}"
+            src="${this._data.image_url}"
             alt=""
         />
         <div class="overlay-image"></div>
-        <p class="recipe-title">${this.#data.title}</p>
+        <p class="recipe-title">${this._data.title}</p>
         </div>
         <div class="recipe-operations-section">
         <div class="recipe-duration">
             <i class="bx bx-time"></i>
             <p><span class="numbers">${
-              this.#data.cooking_time
+              this._data.cooking_time
             }</span> MINUTES</p>
         </div>
         <div class="recipe-servings">
             <i class="bx bx-group"></i>
             <p class="servings-no"><span class="numbers">${
-              this.#data.servings
+              this._data.servings
             }</span> SERVINGS</p>
             <div class="servings-no-icons">
             <i class="bx bx-minus-circle"></i>
@@ -43,7 +40,7 @@ class Recipe {
         <div class="recipe-ingredient-section">
         <h3 class="ingredients-header">RECIPE INGREDIENTS</h3>
         <ul class="recipe-ingredient-list">
-        ${this._renderIngredients(this.#data.ingredients)}
+        ${this._renderIngredients(this._data.ingredients)}
         </ul>
         </div>
 
@@ -52,7 +49,7 @@ class Recipe {
         <p class="recipe-directions-text">
             This recipe was carefully designed and tested by
             <span class="recipe-publisher">${
-              this.#data.publisher
+              this._data.publisher
             }</span>. Please
             check out directions at their website.
         </p>
@@ -72,10 +69,10 @@ class Recipe {
   }
 
   render(recipe) {
-    this.#data = recipe;
-    const html = this._recipeTemplate();
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("beforeend", html);
+    this._data = recipe;
+    const html = this._generateMarkup();
+    this._clear();
+    this._parentElement.insertAdjacentHTML("beforeend", html);
   }
 
   _renderIngredients(ingredients) {
@@ -97,29 +94,14 @@ class Recipe {
       .join("");
   }
 
-  renderSpinner() {
-    const html = `<div class="spinner">
-        <svg>
-        <use href="${icons}#icon-loader"></use>
-        </svg>
-    </div>`;
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("afterbegin", html);
-  }
-
-  renderError() {
-    const html = `
-        <div class="error">
-            <div>
-                <svg>
-                    <use href="${icons}#icon-alert-triangle"></use>
-                </svg>
-            </div>
-            <p>No recipes found for your query. Please try again!</p>
-        </div>
+  renderInitialMessage() {
+    const markup = `
+      <div class="no-recipe-message">
+        &#128516; Start by searching for a recipe or an ingredient. Have fun!
+      </div>
     `;
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("afterbegin", html);
+    this._clear();
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 
   addHandler(handler) {
@@ -127,4 +109,4 @@ class Recipe {
   }
 }
 
-export default new Recipe();
+export default new RecipeView();

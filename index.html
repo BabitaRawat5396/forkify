@@ -14,11 +14,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="src/sass/main.scss" />
+    <script type="module" defer src="src/js/controller.js"></script>
     <script
       defer
       src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"
     ></script>
-    <script defer src="src/js/script.js"></script>
+
     <title>Document</title>
   </head>
   <body>
@@ -59,17 +60,23 @@
           <p class="recipe-item-publisher">BBC Good Food</p>
         </a> -->
 
-        <!-- <div class="pagination-section">
-          <div class="pagination pagination-backward">&larr; Page 1 </div>
-          <div class="pagination pagination-forward">Page 1 &rarr;</div>
+        <!-- 
+        <div class="pagination-section">
+          <div data-goto="page 1" class="pagination pagination-backward">&larr; Page 1 </div>
+          <div data-goto="page 1" class="pagination pagination-forward">Page 1 &rarr;</div>
         </div> -->
       </div>
 
       <div class="recipe-content">
         <!-- Recipe content goes here -->
-        <div class="no-recipe-message">
+        <!-- <div class="no-recipe-message">
           &#128516; Start by searching for a recipe or an ingredient. Have fun!
-        </div>
+        </div> -->
+        <!-- <div class="spinner">
+          <svg>
+            <use href="src/img/icons.svg#icon-loader"></use>
+          </svg>
+        </div> -->
         <!-- <div class="recipe">
           <div class="recipe-heading">
             <img

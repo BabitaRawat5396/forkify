@@ -1,9 +1,13 @@
-import { URL_API } from "../config.js";
+import { URL_API, RECIPES_PER_PAGE } from "./config.js";
 
 export const state = {
-  results: [],
   recipe: null,
-  page: 1,
+  search: {
+    query: "",
+    results: [],
+    page: 1,
+    resultsPerPage: RECIPES_PER_PAGE,
+  },
 };
 
 export async function getJSON(url) {
@@ -25,7 +29,7 @@ export async function getJSON(url) {
 export async function fetchSearchResults(query) {
   try {
     const data = await getJSON(`${URL_API}?search=${query}`);
-    state.results = data.recipes;
+    state.search.results = data.recipes;
   } catch (error) {
     throw error;
   }
@@ -39,3 +43,10 @@ export async function fetchRecipe(recipe_id) {
     throw error;
   }
 }
+
+export const getPaginatedRecipes = function (page = state.search.page) {
+  const start = (page - 1) * 10;
+  const end = page * 10;
+  state.search.page = page;
+  return state.search.results.slice(start, end);
+};

@@ -1,14 +1,11 @@
 import icons from "url:../../img/icons.svg";
+import view from "./view.js";
 
-class RecipeResults {
-  #parentElement = document.querySelector(".recipe-search-results");
-  #data = [];
+class ResultView extends view {
+  _parentElement = document.querySelector(".recipe-search-results");
+  _errorMessage = "No recipes found for your query. Please try again!";
 
-  #clear() {
-    this.#parentElement.innerHTML = "";
-  }
-
-  _recipeItemTemplate(recipe) {
+  _generateMarkup(recipe) {
     return `
       <a class="recipe-item" href="#${recipe.id}">
         <img class="recipe-item-image" src="${
@@ -24,102 +21,15 @@ class RecipeResults {
     `;
   }
 
-  _paginationTemplate(page) {
-    return `
-      <div class="pagination-section">
-        <div class="pagination pagination-backward pagination-hidden">&larr; Page ${
-          page - 1 ? page - 1 : ""
-        }</div>
-        <div class="pagination pagination-forward">Page ${page + 1} &rarr;</div>
-      </div>
-    `;
-  }
+  render(recipes) {
+    this._data = recipes;
+    this._clear();
 
-  render(recipes, page) {
-    this.#data = recipes;
-    const start = (page - 1) * 10;
-    const end = start + 9;
-
-    const slicedRecipes = this.#data.slice(start, end);
-    this.#clear();
-
-    slicedRecipes.forEach((recipe) => {
-      const recipeHtml = this._recipeItemTemplate(recipe);
-      this.#parentElement.insertAdjacentHTML("beforeend", recipeHtml);
-    });
-
-    this.pagination(page);
-  }
-
-  pagination(page) {
-    if (this.#data.length > 10) {
-      const paginationElement = this._paginationTemplate(page);
-      this.#parentElement.insertAdjacentHTML("beforeend", paginationElement);
-    }
-    if (page > 1) {
-      document.querySelector(".pagination-backward").style.opacity = 1;
-    }
-
-    if (page === Math.ceil(this.#data.length / 10)) {
-      document.querySelector(".pagination-forward").style.opacity = 0;
-    }
-  }
-
-  paginationHandler(page) {
-    this.#parentElement.addEventListener(
-      "click",
-      function (e) {
-        const btnForward = e.target.closest(".pagination-forward");
-        const btnBackward = e.target.closest(".pagination-backward");
-
-        if (!btnForward && !btnBackward) return;
-        if (btnForward) {
-          page++;
-        }
-        if (btnBackward) {
-          page--;
-        }
-        this.render(this.#data, page);
-        console.log(page);
-      }.bind(this)
-    );
-  }
-
-  renderSpinner() {
-    const html = `<div class="spinner">
-        <svg>
-        <use href="${icons}#icon-loader"></use>
-        </svg>
-    </div>`;
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("afterbegin", html);
-  }
-
-  renderError() {
-    const html = `
-        <div class="error">
-            <div>
-                <svg>
-                    <use href="${icons}#icon-alert-triangle"></use>
-                </svg>
-            </div>
-            <p>No recipes found for your query. Please try again!</p>
-        </div>
-    `;
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("afterbegin", html);
-  }
-
-  getQuery() {
-    return document.querySelector(".search-input").value;
-  }
-
-  addHandler(handler) {
-    document.querySelector(".form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      handler();
+    this._data.forEach((recipe) => {
+      const recipeHtml = this._generateMarkup(recipe);
+      this._parentElement.insertAdjacentHTML("beforeend", recipeHtml);
     });
   }
 }
 
-export default new RecipeResults();
+export default new ResultView();
