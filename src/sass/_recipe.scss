@@ -73,7 +73,7 @@
         grid-template-columns: 7% 32% 20%;
         gap: 0.5rem;
 
-        .servings--btn{
+        .servings--btn {
           cursor: pointer;
         }
       }
@@ -82,6 +82,7 @@
         display: inline-flex;
         gap: 0.5rem;
       }
+
       .bx {
         font-size: 1.4rem;
         color: $color-primary;
@@ -89,13 +90,22 @@
 
       .recipe-bookmark {
         background-image: $linear-gradient;
-
         border-radius: 50%;
         width: fit-content;
         display: inline-flex;
         padding: 0.7rem;
+        cursor: pointer;
+        transition: transform 0.2s linear;
+
+        &:hover {
+          transform: scale(1.1);
+        }
 
         .bx-bookmark {
+          color: white;
+        }
+
+        .bxs-bookmark {
           color: white;
         }
       }

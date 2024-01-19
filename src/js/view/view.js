@@ -7,6 +7,12 @@ export default class View {
     this._parentElement.innerHTML = "";
   }
 
+  render(data) {
+    this._data = data;
+    const markup = this._generateMarkup();
+    this._clear();
+    this._parentElement.insertAdjacentHTML("beforeend", markup);
+  }
   update(data) {
     this._data = data;
     const updatedMarkup = this._generateMarkup();
@@ -24,7 +30,8 @@ export default class View {
       if (
         !newEl.isEqualNode(curEl) &&
         newEl.firstChild?.nodeValue?.trim() !== "" &&
-        curEl
+        curEl &&
+        curEl.firstChild
       ) {
         // console.log(curEl.firstChild);
         // console.log(newEl.firstChild);

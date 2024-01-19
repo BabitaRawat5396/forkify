@@ -8,6 +8,7 @@ export const state = {
     page: 1,
     resultsPerPage: RECIPES_PER_PAGE,
   },
+  bookmarks: [],
 };
 
 export async function getJSON(url) {
@@ -59,3 +60,5 @@ export const updatedIngredient = function (newServings) {
   );
   return state.recipe;
 };
+
+

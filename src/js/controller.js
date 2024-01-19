@@ -1,4 +1,5 @@
 import paginationView from "./view/paginationView.js";
+import bookmarkView from "./view/bookmarkView.js";
 import resultView from "./view/resultView.js";
 import searchView from "./view/searchView.js";
 import recipeView from "./view/recipeView.js";
@@ -46,11 +47,40 @@ function controlServings(servings) {
   recipeView.update(model.updatedIngredient(servings));
 }
 
+function controlAddingBookmark(bookmarkedRecipe) {
+  const existedBookmark_index = model.state.bookmarks.findIndex(
+    (bookmark) => bookmark.id === bookmarkedRecipe.id
+  );
+  // Removing bookmarked if existed and clicked again
+  if (existedBookmark_index >= 0) {
+    bookmarkedRecipe.bookmarked = false;
+    recipeView.update(model.state.recipe);
+    model.state.bookmarks.splice(existedBookmark_index);
+    return;
+  }
+  // if does not exist then adding bookmark
+  model.state.bookmarks.push(bookmarkedRecipe);
+  recipeView.update(model.state.recipe);
+}
+
+function controlShowBookmark() {
+  if (model.state.bookmarks.length > 0) {
+    bookmarkView.render(model.state.bookmarks);
+    return;
+  }
+
+  // No Recipes are bookmarked
+  bookmarkView.renderError();
+}
+
 function init() {
   searchView.addSearchHandler(controlRecipeResults);
   paginationView.paginationHandler(controlPagination);
   recipeView.addHandler(controlRecipe);
   recipeView.addUpdateServingsHandler(controlServings);
+  recipeView.addBookmarkHandler(controlAddingBookmark);
+  bookmarkView.addShowBookmarkHandler(controlShowBookmark);
+  bookmarkView.removeShowBookmarkHandler();
 }
 
 init();

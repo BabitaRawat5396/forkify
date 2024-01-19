@@ -1,16 +1,24 @@
-
 .header {
   grid-column: span 2;
   display: grid;
   grid-template-columns: 20% 50% 15% 15%;
-  padding: 2rem 2rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0rem 3%;
+
+  .bx {
+    font-size: 1.5rem;
+    color: $color-grad-2;
+    align-self: center;
+  }
 
   .logo {
-    width: 70%;
+    width: 80%;
   }
 
   .search-bar {
-    height: 90%;
+    width: 90%;
+    height: 45%;
     display: grid;
     grid-template-columns: 65% 35%;
     border-radius: 2rem;
@@ -39,11 +47,7 @@
       border-radius: 2rem;
       font-size: 1rem;
       color: $color-grey-light-1;
-      background-image: linear-gradient(
-        to right,
-        $color-grad-1,
-        $color-grad-2
-      );
+      background-image: linear-gradient(to right, $color-grad-1, $color-grad-2);
     }
 
     .bx-search-alt-2 {
@@ -51,24 +55,21 @@
     }
   }
 
-  .recipe-icons {
-    align-self: center;
-    justify-self: center;
+  .header-icons {
+    height: 100%;
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 0.4rem;
     cursor: pointer;
-    // border: 1px solid;
-  }
 
-  .bx {
-    font-size: 1.5rem;
-    color: $color-grad-2;
-    align-self: center;
+    &:hover {
+      background-color: $color-grey-light-2;
+    }
   }
 }
 
 @media screen and (max-width: $breakpoint-large-desktop) {
-
   .header {
     grid-template-columns: 20% 50% 10% 20%;
     gap: 0rem;
@@ -113,7 +114,6 @@
     }
 
     .search-bar {
-
       .search-input {
         padding: 0.3rem 1rem;
       }
@@ -134,7 +134,7 @@
       }
     }
 
-    .recipe-icons{
+    .recipe-icons {
       font-size: 90%;
     }
 
@@ -180,7 +180,7 @@
       }
     }
 
-    .recipe-icons{
+    .recipe-icons {
       font-size: 80%;
     }
 

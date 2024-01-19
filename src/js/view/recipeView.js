@@ -43,7 +43,9 @@ class RecipeView extends view {
             </span>
           </div>
         </div>
-        <p class="recipe-bookmark"><i class="bx bx-bookmark"></i></p>
+        <p class="recipe-bookmark"><i class="bx bx${
+          this._data.bookmarked ? "s" : ""
+        }-bookmark"></i></p>
         </div>
         <div class="recipe-ingredient-section">
         <h3 class="ingredients-header">RECIPE INGREDIENTS</h3>
@@ -76,12 +78,6 @@ class RecipeView extends view {
     `;
   }
 
-  render(recipe) {
-    this._data = recipe;
-    const markup = this._generateMarkup();
-    this._clear();
-    this._parentElement.insertAdjacentHTML("beforeend", markup);
-  }
 
   _renderIngredients(ingredients) {
     return ingredients
@@ -125,6 +121,19 @@ class RecipeView extends view {
   addHandler(handler) {
     ["hashchange", "load"].forEach((event) =>
       window.addEventListener(event, handler)
+    );
+  }
+
+  addBookmarkHandler(handler) {
+    //add event listener to bookmark button
+    this._parentElement.addEventListener(
+      "click",
+      function (e) {
+        const btn = e.target.closest(".recipe-bookmark");
+        if (!btn) return;
+        this._data.bookmarked = true;
+        handler(this._data);
+      }.bind(this)
     );
   }
 }
